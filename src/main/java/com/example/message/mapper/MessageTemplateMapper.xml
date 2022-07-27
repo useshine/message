@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.message.mapper.MessageTemplateMapper">
+    <insert id="Add" parameterType="com.example.message.entity.MessageTemplate" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO message_template(name,msgStatus,sendChannel,msgContent,creator,expectPushTime,createTime)
+        VALUES (#{name},#{msgStatus},#{sendChannel},#{msgContent},#{creator},#{expectPushTime},#{createTime})
+    </insert>
+
+    <select id="Get" resultType="com.example.message.entity.MessageTemplate" parameterType="Integer">
+        SELECT * FROM message_template
+        WHERE id=#{id}
+    </select>
+
+    <update id="Save" parameterType="com.example.message.entity.MessageTemplate">
+        UPDATE message_template
+        SET msgStatus=#{msgStatus},
+            updateTime=#{updateTime},
+            updator=#{updator},
+            cronTaskId=#{cronTaskId}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM message_template
+        WHERE id=#{id}
+    </delete>
+
+    <select id="Search" resultType="com.example.message.entity.MessageTemplate">
+        select * from message_template mg
+        <where>
+            <if test="searchCondition.msgName!=null and searchCondition.msgName!=''">
+                mg.msgName like concat('%', #{searchCondition.msgName }, '%')
+            </if>
+            <if test="searchCondition.sendChannel!=null">
+                and mg.sendChannel=#{searchCondition.sendChannel}
+            </if>
+        </where>
+        order by mg.createTime desc
+    </select>
+
+    <update id="UpdateMsg" parameterType="com.example.message.vo.EditMessgeVo">
+        UPDATE message_template
+        SET name=#{name},msgContent=#{msgContent},sendChannel=#{sendChannel},expectPushTime=#{expectPushTime}
+        WHERE id=#{id}
+    </update>
+
+</mapper>

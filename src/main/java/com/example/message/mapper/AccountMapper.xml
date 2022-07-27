@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.message.mapper.AccountMapper">
+    <insert id="Add" parameterType="com.example.message.entity.Account" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO account(username,password,type,token,createTime)
+        VALUES (#{username},#{password},#{type},#{token},#{createTime})
+    </insert>
+
+    <select id="GetAccountByUsername" resultType="com.example.message.entity.Account">
+        select * from account where username = #{username}
+    </select>
+
+    <select id="Get" resultType="com.example.message.entity.Account">
+        select * from account where id = #{id}
+    </select>
+
+    <select id="GetByToken" resultType="com.example.message.entity.Account">
+        select *
+        from account
+        where token = #{token}
+    </select>
+
+    <update id="Update" parameterType="com.example.message.entity.Account">
+        update account
+        set username=#{username},
+        password=#{password},
+        type=#{type},
+        token=#{token},
+        tokenValidPeriod=#{tokenValidPeriod}
+        where id = #{id}
+    </update>
+
+</mapper>
